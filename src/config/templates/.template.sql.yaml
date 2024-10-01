@@ -1,0 +1,5 @@
+sql_connection:
+    driver_path: <local_dummy>
+    server: pg_db
+    port: 5432
+    db_name: <local_dummy>

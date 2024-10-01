@@ -1,0 +1,4 @@
+spark_connection:
+    master: "local[*]"
+    driver_memory: "12g"
+    network_timeout: 120
