@@ -8,18 +8,17 @@ class NewsSentimentTrader(Strategy):
 
     name = "NewsSentimentTrader"
 
-    def initialize(self, symbol:str, cash_at_risk:float, sleeptime:str):
+    def initialize(self, symbol:str, cash_at_risk:float, sleeptime:str, api_key:str, secret_key:str, base_url:str):
 
         self.symbol = symbol
         self.sleeptime = sleeptime
         self.last_trade = None
         self.api = REST(
-            base_url=conf.paper_creds.base_url,
-            key_id=conf.paper_creds.api_key,
-            secret_key=conf.paper_creds.secret_key.get_secret_value()
+            base_url=base_url,
+            key_id=api_key,
+            secret_key=secret_key
         )
         self.cash_at_risk = cash_at_risk
-
 
     def get_dates(self):
 

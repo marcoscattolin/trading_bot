@@ -6,20 +6,25 @@ from src.config.config import conf
 
 def deploy():
 
+    # retrieve live params
+    params = {
+            "symbol": conf.trading_bot.symbol,
+            "cash_at_risk": conf.trading_bot.cash_at_risk,
+            "sleeptime": conf.trading_bot.sleeptime,
+            "api_key": conf.live_creds.api_key,
+            "secret_key": conf.live_creds.secret_key.get_secret_value(),
+            "base_url": conf.live_creds.base_url
+        }
+
     # init broker on
     alpaca_config = {
-        "API_KEY": conf.live_creds.api_key,
-        "API_SECRET": conf.live_creds.secret_key.get_secret_value(),
-        "PAPER": True,
+        "API_KEY": params["api_key"],
+        "API_SECRET": params["secret_key"],
+        "PAPER": False,
     }
     broker = Alpaca(alpaca_config)
 
     # init strategy
-    params = {
-            "symbol": conf.trading_bot.symbol,
-            "cash_at_risk": conf.trading_bot.cash_at_risk,
-            "sleeptime": conf.trading_bot.sleeptime
-        }
     strategy = NewsSentimentTrader(
         name="NewsSentimentTrader",
         broker=broker,

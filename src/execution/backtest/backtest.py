@@ -7,20 +7,25 @@ from lumibot.brokers import Alpaca
 
 def backtest():
 
-    # init broker on
+    # retrieve backtest params
+    params = {
+            "symbol": conf.trading_bot.symbol,
+            "cash_at_risk": conf.trading_bot.cash_at_risk,
+            "sleeptime": conf.trading_bot.sleeptime,
+            "api_key": conf.paper_creds.api_key,
+            "secret_key": conf.paper_creds.secret_key.get_secret_value(),
+            "base_url": conf.paper_creds.base_url
+        }
+
+    # init broker
     alpaca_config = {
-        "API_KEY": conf.paper_creds.api_key,
-        "API_SECRET": conf.paper_creds.secret_key.get_secret_value(),
+        "API_KEY": params["api_key"],
+        "API_SECRET": params["secret_key"],
         "PAPER": True,
     }
     broker = Alpaca(alpaca_config)
 
     # init strategy
-    params = {
-            "symbol": conf.trading_bot.symbol,
-            "cash_at_risk": conf.trading_bot.cash_at_risk,
-            "sleeptime": conf.trading_bot.sleeptime
-        }
     strategy = NewsSentimentTrader(
         name="NewsSentimentTrader",
         broker=broker,
