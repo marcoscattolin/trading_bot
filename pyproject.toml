@@ -16,21 +16,21 @@ python = "3.11.*"
 # ------------------ basic_vm ---------------------------------
 python-dateutil = "2.8.2"
 pytz = "2023.3"
-PyYAML = "6.0"
+PyYAML = "6.0.1"
 six = "1.16.0"
-typing_extensions = "4.6.1"
+typing_extensions = "4.12.2"
 furo = "2023.5.20"
-traitlets = "5.9.0"
+traitlets = "5.14.3"
 pydantic = "2.6.3"
 pydantic-settings = "2.2.1"
-numpy = "2.0.0"
+numpy = "1.26.4"
 pandas = "2.2.2"
 tzdata = "2023.3"
 scikit-learn = "1.5.1"
 statsmodels = "0.14.2"
 notebook = "6.5.4"
-plotly = "5.15.0"
-seaborn = "0.12.2"
+plotly = "5.24.1"
+seaborn = "0.13.2"
 lightgbm = "3.3.5"
 xlrd = "2.0.1"
 openpyxl = "3.1.2"
@@ -41,20 +41,16 @@ plotnine = "0.13.6"
 pip-audit = "2.7.3"
 
 # ------------------ s3 ---------------------------------
-[tool.poetry.group.s3]
-optional = true
+[tool.poetry.group.trading]
+optional = false
 
-[tool.poetry.group.s3.dependencies]
-fsspec = "^2024.2.0"
-s3fs = "^2024.2.0"
+[tool.poetry.group.trading.dependencies]
+lumibot = "3.7.8"
+alpaca-py = "0.30.1"
+alpaca-trade-api = "3.2.0"
+torch = "2.4.1"
+transformers = "4.45.1"
 
-
-# ------------------ spark ----------------------------------
-[tool.poetry.group.spark]
-optional = true
-
-[tool.poetry.group.spark.dependencies]
-pyspark = "3.5.0"
 
 # ------------------ airflow -------------------------
 [tool.poetry.group.airflow]
