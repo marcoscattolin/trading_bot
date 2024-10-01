@@ -2,7 +2,7 @@ from lumibot.strategies.strategy import Strategy
 from src.config.config import conf
 from alpaca_trade_api import REST
 from timedelta import Timedelta
-import src.ml.finbert as finbert
+import src.ml_utils.finbert as finbert
 from lumibot.brokers import Alpaca
 from src.utils.logging import logger
 
