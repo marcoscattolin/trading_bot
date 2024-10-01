@@ -17,79 +17,22 @@ from ._xconfig import BaseConfigProvider, XConfig
 logging.getLogger("airflow.models.variable").setLevel(logging.CRITICAL)
 
 
-class BlobStorageLogin(BaseModel):
+class AlpacaCreds(BaseModel):
     """
     Pydantic data model for Azure blob storage container
     """
 
-    account_name: str = None
-    account_key: str = SecretStr
-
-
-class SqlLogin(BaseModel):
-    """
-    Pydantic data model for sql login parameters
-    """
-
-    username: str
-    password: SecretStr
-
-
-class SqlConnection(BaseModel):
-    """
-    Pydantic data model for sql connection parameters
-    """
-
-    driver_path: str
-    server: str
-    port: int
-    db_name: str
-
-
-class TelegramCredentials(BaseModel):
-    """
-    Pydantic data model for telegram credentials
-    """
-
-    token: SecretStr
-    chat_id: int
-
-
-class SparkConnection(BaseModel):
-    """
-    Pydantic data model for sql connection parameters
-    """
-
-    master: str
-    driver_memory: str
-    network_timeout: int = Field(default=120, description="Network timeout in seconds")
-
-
-class S3Credentials(BaseModel):
-    """
-    Pydantic data model for S3 storage
-    """
-
-    access_key: str
-    secret_key: SecretStr
-    bucket_name: str
+    api_key: str = None
+    secret_key: str = SecretStr
+    base_url: str = None
 
 
 class Config(XConfig):
 
     source: str  # to check where the config it read from. Can be anything, but not 'test'
 
-    blob_storage_login: BlobStorageLogin
+    alpaca_creds: AlpacaCreds
 
-    sql_login: SqlLogin
-
-    sql_connection: SqlConnection
-
-    telegram_creds: TelegramCredentials
-
-    spark_connection: SparkConnection
-
-    s3_creds: S3Credentials
 
 
 class __Provider(BaseConfigProvider[Config]):
