@@ -1,17 +1,18 @@
-from lumibot.brokers import Alpaca
 from lumibot.strategies.strategy import Strategy
-from lumibot.backtesting import YahooDataBacktesting
-from lumibot.traders import Trader
-from datetime import datetime
 from src.config.config import conf
 from alpaca_trade_api import REST
-from src.utils.logging import logger
 from timedelta import Timedelta
 import src.ml.finbert as finbert
+from lumibot.brokers import Alpaca
+from src.utils.logging import logger
 
-class MLTrader(Strategy):
+
+class NewsSentimentTrader(Strategy):
+
+    name = "NewsSentimentTrader"
 
     def initialize(self, symbol:str, cash_at_risk:float, sleeptime:str):
+
         self.symbol = symbol
         self.sleeptime = sleeptime
         self.last_trade = None
@@ -105,8 +106,9 @@ class MLTrader(Strategy):
                 self.last_trade = "sell"
 
 
-def run():
+def get_strategy():
 
+    # init broker
     alpaca_config = {
         "API_KEY": conf.alpaca_creds.api_key,
         "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
@@ -114,33 +116,17 @@ def run():
     }
     broker = Alpaca(alpaca_config)
 
+    # init strategy
     params = {
             "symbol": conf.trading_bot.symbol,
             "cash_at_risk": conf.trading_bot.cash_at_risk,
             "sleeptime": conf.trading_bot.sleeptime
         }
-    logger.info(f"Initializing MLTrader {params}")
-    strategy = MLTrader(
-        name="MLTrader",
+    strategy = NewsSentimentTrader(
+        name="NewsSentimentTrader",
         broker=broker,
         parameters=params
     )
+    logger.info(f"Initializing {strategy.name} with params: {params}")
 
-    start = datetime(2020, 1, 1)
-    end = datetime(2023, 12, 31)
-    strategy.backtest(
-        YahooDataBacktesting,
-        start,
-        end,
-        parameters=params
-    )
-
-    # to deploy the strategy uncomment the following lines
-    #trader = Trader()
-    #trader.add_strategy(strategy)
-    #trader.run_all()
-
-
-if __name__ == "__main__":
-
-    run()
+    return strategy, params
