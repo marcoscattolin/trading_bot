@@ -20,7 +20,7 @@ def deploy():
     alpaca_config = {
         "API_KEY": params["api_key"],
         "API_SECRET": params["secret_key"],
-        "PAPER": False,
+        "PAPER": True,
     }
     broker = Alpaca(alpaca_config)
 
