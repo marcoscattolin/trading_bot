@@ -2,7 +2,7 @@ from lumibot.strategies.strategy import Strategy
 from src.config.config import conf
 from alpaca_trade_api import REST
 from timedelta import Timedelta
-import src.ml_utils.finbert as finbert
+import src.ml_utils.fin_bert as fin_bert
 from lumibot.brokers import Alpaca
 from src.utils.logging import logger
 
@@ -48,7 +48,7 @@ class NewsSentimentTrader(Strategy):
         news = self.api.get_news(symbol=self.symbol, start=start, end=end)
 
         news = [x.__dict__["_raw"]["headline"] for x in news]
-        probability, sentiment = finbert.estimate_sentiment(news)
+        probability, sentiment = fin_bert.estimate_sentiment(news)
         return probability, sentiment
 
 
