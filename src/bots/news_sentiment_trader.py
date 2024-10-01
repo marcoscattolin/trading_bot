@@ -3,9 +3,6 @@ from src.config.config import conf
 from alpaca_trade_api import REST
 from timedelta import Timedelta
 import src.ml_utils.fin_bert as fin_bert
-from lumibot.brokers import Alpaca
-from src.utils.logging import logger
-
 
 class NewsSentimentTrader(Strategy):
 
@@ -17,9 +14,9 @@ class NewsSentimentTrader(Strategy):
         self.sleeptime = sleeptime
         self.last_trade = None
         self.api = REST(
-            base_url=conf.alpaca_creds.base_url,
-            key_id=conf.alpaca_creds.api_key,
-            secret_key=conf.alpaca_creds.secret_key.get_secret_value()
+            base_url=conf.paper_creds.base_url,
+            key_id=conf.paper_creds.api_key,
+            secret_key=conf.paper_creds.secret_key.get_secret_value()
         )
         self.cash_at_risk = cash_at_risk
 
@@ -104,29 +101,3 @@ class NewsSentimentTrader(Strategy):
                 )
                 self.submit_order(order)
                 self.last_trade = "sell"
-
-
-def get_strategy():
-
-    # init broker
-    alpaca_config = {
-        "API_KEY": conf.alpaca_creds.api_key,
-        "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
-        "PAPER": True,
-    }
-    broker = Alpaca(alpaca_config)
-
-    # init strategy
-    params = {
-            "symbol": conf.trading_bot.symbol,
-            "cash_at_risk": conf.trading_bot.cash_at_risk,
-            "sleeptime": conf.trading_bot.sleeptime
-        }
-    strategy = NewsSentimentTrader(
-        name="NewsSentimentTrader",
-        broker=broker,
-        parameters=params
-    )
-    logger.info(f"Initializing {strategy.name} with params: {params}")
-
-    return strategy, params

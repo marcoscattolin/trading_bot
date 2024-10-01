@@ -38,7 +38,9 @@ class Config(XConfig):
 
     source: str  # to check where the config it read from. Can be anything, but not 'test'
 
-    alpaca_creds: AlpacaCreds
+    paper_creds: AlpacaCreds
+
+    live_creds: AlpacaCreds
 
     trading_bot: TradingBot
 
