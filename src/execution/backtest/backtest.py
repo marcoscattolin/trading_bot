@@ -34,8 +34,8 @@ def backtest():
     logger.info(f"Initializing {strategy.name} with params: {params}")
 
     # backtest
-    start = datetime(2023, 12, 1)
-    end = datetime(2023, 12, 31)
+    start = conf.trading_bot.backtest_start
+    end = conf.trading_bot.backtest_end
     logger.info(f"Backtesting {strategy.name}: backtest period from {start} to {end}")
     strategy.backtest(
         YahooDataBacktesting,

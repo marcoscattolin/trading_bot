@@ -6,6 +6,7 @@ import logging
 import os
 import pathlib
 from typing import Optional, Union
+from datetime import datetime
 
 import yaml
 from pydantic import BaseModel, Field, SecretStr
@@ -23,6 +24,8 @@ class TradingBot(BaseModel):
     sleeptime: str = None
     take_profit_price: float = None
     stop_loss_price: float = None
+    backtest_start: datetime = None
+    backtest_end: datetime = None
 
 class AlpacaCreds(BaseModel):
     """
