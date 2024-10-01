@@ -39,6 +39,7 @@ SQLAlchemy = "1.4.51"
 psycopg2-binary = "2.9.9"
 plotnine = "0.13.6"
 pip-audit = "2.7.3"
+timedelta = "2020.12.3"
 
 # ------------------ s3 ---------------------------------
 [tool.poetry.group.trading]

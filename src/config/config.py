@@ -17,13 +17,20 @@ from ._xconfig import BaseConfigProvider, XConfig
 logging.getLogger("airflow.models.variable").setLevel(logging.CRITICAL)
 
 
+class TradingBot(BaseModel):
+    symbol: str = None
+    cash_at_risk: float = None
+    sleeptime: str = None
+    take_profit_price: float = None
+    stop_loss_price: float = None
+
 class AlpacaCreds(BaseModel):
     """
     Pydantic data model for Azure blob storage container
     """
 
     api_key: str = None
-    secret_key: str = SecretStr
+    secret_key: SecretStr = None
     base_url: str = None
 
 
@@ -33,6 +40,7 @@ class Config(XConfig):
 
     alpaca_creds: AlpacaCreds
 
+    trading_bot: TradingBot
 
 
 class __Provider(BaseConfigProvider[Config]):

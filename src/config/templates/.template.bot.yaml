@@ -1,0 +1,4 @@
+trading_bot:
+    symbol: "SPY"
+    cash_at_risk: 0.5
+    sleeptime: "24H"
