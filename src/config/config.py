@@ -14,6 +14,8 @@ from pydantic import BaseModel, Field, SecretStr
 from src import ROOT_DIR
 
 from ._xconfig import BaseConfigProvider, XConfig
+from lumibot.brokers import Alpaca
+
 
 logging.getLogger("airflow.models.variable").setLevel(logging.CRITICAL)
 
@@ -35,15 +37,14 @@ class AlpacaCreds(BaseModel):
     api_key: str = None
     secret_key: SecretStr = None
     base_url: str = None
+    paper: bool = None
 
 
 class Config(XConfig):
 
     source: str  # to check where the config it read from. Can be anything, but not 'test'
 
-    paper_creds: AlpacaCreds
-
-    live_creds: AlpacaCreds
+    alpaca_creds: AlpacaCreds
 
     trading_bot: TradingBot
 
@@ -116,3 +117,10 @@ def get_config(
 
 
 conf = get_config()
+
+# init broker
+broker = Alpaca({
+    "API_KEY": conf.alpaca_creds.api_key,
+    "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
+    "PAPER": True,
+})
