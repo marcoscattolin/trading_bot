@@ -48,7 +48,6 @@ optional = false
 [tool.poetry.group.trading.dependencies]
 lumibot = "3.7.8"
 alpaca-py = "0.30.1"
-alpaca-trade-api = "3.2.0"
 torch = "2.4.1"
 transformers = "4.45.1"
 
