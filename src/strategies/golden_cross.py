@@ -8,7 +8,7 @@ from alpaca.data.timeframe import TimeFrame
 
 class GoldenCross(Strategy):
 
-    def initialize(self, symbol:str, sleeptime:str, short_window:int, long_window:int, cash_at_risk:float):
+    def initialize(self, symbol:str="AAPL", sleeptime:str="24H", short_window:int=7, long_window:int=14, cash_at_risk:float=.5):
 
         self.symbol = symbol
         self.short_window = short_window
@@ -54,16 +54,8 @@ class GoldenCross(Strategy):
 
         # If the short moving average is below the long moving average, sell
         elif short_mov_avg < long_mov_avg:
-            order = self.create_order(
-                asset=self.symbol,
-                quantity=quantity,
-                side="sell",
-                type="bracket",
-                take_profit_price=last_price * .95,
-                stop_loss_price=last_price * 1.2
-            )
-            self.submit_order(order)
-
+            # sell all
+            self.sell_all()
         else:
             logger.info(f"Nothing to do")
 
