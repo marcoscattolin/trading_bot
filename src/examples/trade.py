@@ -53,4 +53,4 @@ def live_trade():
     trader.run_all()
 
 if __name__ == "__main__":
-    live_trade()
+    backtest()

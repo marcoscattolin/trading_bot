@@ -1,47 +1,40 @@
 from lumibot.backtesting import YahooDataBacktesting
 from datetime import datetime
-from src.utils.logging import logger
-from src.bots.news_sentiment_trader import NewsSentimentTrader
-from src.config.config import conf
+from src.strategies.golden_cross import GoldenCross
 from lumibot.brokers import Alpaca
+from src.config.config import conf
 
 def backtest():
 
-    # retrieve backtest params
+    # init alpaca broker
+    ALPACA_CONFIG = {
+        "API_KEY": conf.alpaca_creds.api_key,
+        "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
+        "PAPER": conf.alpaca_creds.paper  # Set to True for paper trading, False for live trading
+    }
+
     params = {
             "symbol": conf.trading_bot.symbol,
+            "short_window": 7,
+            "long_window": 14,
             "cash_at_risk": conf.trading_bot.cash_at_risk,
             "sleeptime": conf.trading_bot.sleeptime,
-            "api_key": conf.paper_creds.api_key,
-            "secret_key": conf.paper_creds.secret_key.get_secret_value(),
-            "base_url": conf.paper_creds.base_url
         }
 
+    # Pick the dates that you want to start and end your backtest
+    backtesting_start = datetime(2024, 1, 1)
+    backtesting_end = datetime(2024, 1, 31)
+
     # init broker
-    alpaca_config = {
-        "API_KEY": params["api_key"],
-        "API_SECRET": params["secret_key"],
-        "PAPER": True,
-    }
-    broker = Alpaca(alpaca_config)
+    broker = Alpaca(ALPACA_CONFIG)
+    strategy = GoldenCross(broker=broker, parameters=params)
 
-    # init strategy
-    strategy = NewsSentimentTrader(
-        name="NewsSentimentTrader",
-        broker=broker,
-        parameters=params
-    )
-    logger.info(f"Initializing {strategy.name} with params: {params}")
-
-    # backtest
-    start = conf.trading_bot.backtest_start
-    end = conf.trading_bot.backtest_end
-    logger.info(f"Backtesting {strategy.name}: backtest period from {start} to {end}")
+    # Run the backtest
     strategy.backtest(
         YahooDataBacktesting,
-        start,
-        end,
-        parameters=params
+        backtesting_start,
+        backtesting_end,
+        parameters=params,
     )
 
 

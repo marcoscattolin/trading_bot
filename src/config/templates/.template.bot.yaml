@@ -1,5 +1,5 @@
 trading_bot:
-    symbol: "SPY"
+    symbol: "AAPL"
     cash_at_risk: 0.5
     sleeptime: "24H"
     backtest_start: "2022-01-01"
