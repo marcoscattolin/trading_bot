@@ -44,7 +44,7 @@ def live_trade():
         "PAPER": conf.alpaca_creds.paper  # Set to True for paper trading, False for live trading
     }
 
-    # Run the live trading bot
+    # Run the trading bot on Alpaca
     trader = Trader()
     broker = Alpaca(ALPACA_CONFIG)
     strategy = MyStrategy(broker=broker)
