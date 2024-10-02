@@ -117,10 +117,3 @@ def get_config(
 
 
 conf = get_config()
-
-# init broker
-broker = Alpaca({
-    "API_KEY": conf.alpaca_creds.api_key,
-    "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
-    "PAPER": True,
-})

@@ -9,7 +9,7 @@ from src.utils.logging import logger
 
 def query_crypto():
 
-    logger.info("Getting crypto data")
+    logger.info("+++++++++++++++++ CRYPTO DATA ++++++++++++++++++++++")
 
     client = CryptoHistoricalDataClient()
     request_params = CryptoBarsRequest(
@@ -20,10 +20,11 @@ def query_crypto():
 
     bars = client.get_crypto_bars(request_params)
     logger.info(f"Bars: {bars}")
+    logger.info("----------------- CRYPTO DATA ----------------------")
 
 def query_stock():
 
-    logger.info("Getting stock data")
+    logger.info("+++++++++++++++++ SOCK DATA ++++++++++++++++++++++")
 
     stock_client = StockHistoricalDataClient(api_key=conf.alpaca_creds.api_key, secret_key=conf.alpaca_creds.secret_key.get_secret_value())
     request_params = StockBarsRequest(
@@ -34,20 +35,22 @@ def query_stock():
     bars = stock_client.get_stock_bars(request_params)
 
     logger.info(f"Bars: {bars}")
+    logger.info("----------------- STOCK DATA ----------------------")
 
 def query_last_quote():
 
-    logger.info("Getting last quote")
+    logger.info("+++++++++++++++++ LAST QUOTE DATA ++++++++++++++++++++++")
 
     stock_client = StockHistoricalDataClient(api_key=conf.alpaca_creds.api_key, secret_key=conf.alpaca_creds.secret_key.get_secret_value())
     quote_request = StockLatestQuoteRequest(symbol_or_symbols="AAPL")
     quote = stock_client.get_stock_latest_quote(quote_request)
 
     logger.info(f"Quote: {quote}")
+    logger.info("----------------- LAST QUOTE DATA ----------------------")
 
 def query_news():
 
-    logger.info("Getting news")
+    logger.info("+++++++++++++++++ NEWS DATA ++++++++++++++++++++++")
 
     news_client = NewsClient(api_key=conf.alpaca_creds.api_key, secret_key=conf.alpaca_creds.secret_key.get_secret_value())
     request_params = NewsRequest(
@@ -57,6 +60,8 @@ def query_news():
     )
     news = news_client.get_news(request_params)
     logger.info(f"News: {news}")
+    logger.info("----------------- NEWS DATA ----------------------")
+
 
 def run():
 

@@ -39,9 +39,9 @@ def backtest():
 def live_trade():
 
     ALPACA_CONFIG = {
-     "API_KEY": conf.alpaca_creds.api_key,
-     "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
-     "PAPER": conf.alpaca_creds.paper  # Set to True for paper trading, False for live trading
+        "API_KEY": conf.alpaca_creds.api_key,
+        "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
+        "PAPER": conf.alpaca_creds.paper  # Set to True for paper trading, False for live trading
     }
 
     # Run the live trading bot
