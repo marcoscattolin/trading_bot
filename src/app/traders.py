@@ -19,7 +19,8 @@ class LLMTrader(Strategy):
     def get_cash(self):
 
         account = self.alpaca_client.get_account()
-        return float(account.cash)
+        cash = float(account.cash)
+        return cash
 
     def position_sizing(self, symbol):
         """
