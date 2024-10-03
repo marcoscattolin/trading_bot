@@ -27,6 +27,6 @@ def live_news():
 
 if __name__ == "__main__":
 
-    #live_stock()
+    live_stock()
     #live_crypto()
-    live_news()
+    #live_news()
