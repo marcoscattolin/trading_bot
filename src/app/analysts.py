@@ -40,6 +40,8 @@ class LLMAnalyst:
     @abstractmethod
     def _format_input(self, message):
 
+        logger.debug(f"[{self.name}]: Parsing message: {message}")
+
         # extract symbols from the data
         symbols = ", ".join(message.get("symbols"))
         headline = message.get("headline")
@@ -48,14 +50,15 @@ class LLMAnalyst:
 
         return message
 
-    def _format_output(self, input_message):
+    def _format_output(self, llm_output):
 
+        logger.debug(f"[{self.name}]: Parsing llm output: {llm_output}")
         # parse the result
-        if input_message == "<not_relevant>":
+        if llm_output == "<not_relevant>":
             return None
         else:
 
-            symbol, action, reason = input_message.content.split(" - ")
+            symbol, action, reason = llm_output.content.split(" - ")
             if action not in ["buy", "sell"]:
                 return None
             else:

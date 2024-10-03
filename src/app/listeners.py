@@ -20,7 +20,7 @@ class NewsListener:
         message = dict(data)
 
         # log message
-        logger.info(f"[{self.name}]: {message}")
+        logger.debug(f"[{self.name}]: {message}")
 
         # send to dispatcher
         self.dispatch(message)
