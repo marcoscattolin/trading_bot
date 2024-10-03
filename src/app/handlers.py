@@ -69,7 +69,7 @@ class LLMHandler(Handler):
         symbols = ", ".join(data.symbols)
         headline = data.headline
         summary = data.summary
-        message = f"{headline} | {summary} | Symbols: {symbols}"
+        message = f"{symbols} | {headline} | {summary} | "
         logger.debug(message)
 
         try:
@@ -122,7 +122,7 @@ class LLMTradingHandler(LLMHandler):
 
     # async handler
     async def _handler(self, data):
-        logger.debug(data)
+
         symbol, action, reason = self._parse_data(data)
         if symbol == "<not_relevant>":
             pass
