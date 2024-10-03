@@ -6,9 +6,7 @@ from alpaca.trading.client import TradingClient
 
 class AlpacaTrader(Strategy):
 
-    def initialize(self, cash_at_risk:float = 0.5):
-
-        self.cash_at_risk = cash_at_risk
+    def initialize(self):
 
         self.alpaca_client = TradingClient(
             api_key=conf.alpaca_creds.api_key,
@@ -34,13 +32,18 @@ class AlpacaTrader(Strategy):
             The number of shares to buy
         """
 
-        cash = min(self.get_cash(), 500)
+        available_cash = self.get_cash()
+
+        if available_cash > 500:
+            available_cash = 500
+        else:
+            available_cash = 0
 
         last_price = self.get_last_price(symbol)
-        quantity = round(cash * self.cash_at_risk / last_price, 0)
+        quantity = round(available_cash / last_price, 0)
 
 
-        return cash, last_price, quantity
+        return available_cash, last_price, quantity
 
 
     def make_order(self, symbol, action):
@@ -59,10 +62,10 @@ class AlpacaTrader(Strategy):
                 order = self.create_order(
                     asset=symbol,
                     quantity=quantity,
-                    time_in_force="day", # valid for today only
+                    time_in_force="gtc", # valid for today only
                     side="buy",
                     type="bracket",
-                    limit_price=limit_price,
+                    # limit_price=limit_price,
                     take_profit_price=take_profit_price,
                     stop_loss_price=stop_loss_price
                 )
