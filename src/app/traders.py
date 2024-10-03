@@ -17,7 +17,7 @@ class AlpacaTrader(Strategy):
     def get_cash(self):
 
         account = self.alpaca_client.get_account()
-        cash = float(account.buying_power)
+        cash = float(account.cash)
         logger.debug(f"Available cash for trading (buying_power): {cash}")
 
         return cash
