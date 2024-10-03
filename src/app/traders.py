@@ -4,7 +4,7 @@ from src.utils.logging import logger
 from lumibot.brokers import Alpaca
 from alpaca.trading.client import TradingClient
 
-class LLMTrader(Strategy):
+class AlpacaTrader(Strategy):
 
     def initialize(self, cash_at_risk:float = 0.5):
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     }
     broker = Alpaca(alpaca_config)
 
-    trader = LLMTrader(broker=broker)
+    trader = AlpacaTrader(broker=broker)
 
     trader.initialize()
 
