@@ -123,6 +123,8 @@ class LLMTradingHandler(LLMHandler):
         symbol, action, reason = self._parse_data(data)
         if symbol == "<not_relevant>":
             pass
+        elif action not in ["buy", "sell"]:
+            pass
         else:
             self.trader.make_order(symbol, action)
 
