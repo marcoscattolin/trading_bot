@@ -41,7 +41,7 @@ class LLMHandler(Handler):
                     "reply with the best stock to buy based on the latest news. When you reply, just use the stock "
                     "symbol, the action (buy/sell) and the reason why you suggest that action. Use '-' to separate the "
                     "stock symbol, the action and the reason.  For example: AAPL - buy - reason. If the message is not "
-                    "relevant for trading stocks, just reply with '<not relevant>'.",
+                    "relevant for trading stocks, just reply with '<not_relevant>'.",
                 ),
                 MessagesPlaceholder(variable_name="messages"),
             ]
@@ -63,8 +63,13 @@ class LLMHandler(Handler):
                     ]
                 }
             )
-            print(result.content)
 
+            # parse the result
+            if result.content == "<not_relevant>":
+                return "<not_relevant>", "<not_relevant>", "<not_relevant>"
+            else:
+                symbol, action, reason = result.content.split(" - ")
+                return symbol, action, reason
         except Exception as e:
             print(f"An error occurred: {e}")
 
@@ -73,8 +78,14 @@ if __name__ == "__main__":
 
     async def main():
         handler = LLMHandler().get_handler()
-        await handler("What is the secret to happiness?")
-        await handler("Apple shares are expected to boom in the following days.")
-        await handler("Nvidia is declaring bankruptcy.")
+
+        symbol, action, reason = await handler("Apple shares are expected to boom in the following days.")
+        print(symbol, action, reason)
+
+        symbol, action, reason = await handler("Nvidia is declaring bankruptcy.")
+        print(symbol, action, reason)
+
+        symbol, action, reason = await handler("What is the secret to happiness?")
+        print(symbol, action, reason)
 
     asyncio.run(main())
