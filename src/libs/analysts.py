@@ -3,10 +3,7 @@ from langchain_openai import ChatOpenAI
 from src.config.config import conf
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-import asyncio
 from src.utils.logging import logger
-from lumibot.brokers import Alpaca
-from src.app.traders import AlpacaTrader
 
 class LLMAnalyst:
 
