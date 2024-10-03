@@ -1,4 +1,6 @@
 from abc import abstractmethod
+
+from Tools.scripts.nm2def import symbols
 from langchain_openai import ChatOpenAI
 from src.config.config import conf
 from langchain_core.messages import HumanMessage
@@ -68,6 +70,7 @@ class LLMHandler(Handler):
         headline = data.headline
         summary = data.summary
         message = f"{headline} | {summary} | Symbols: {symbols}"
+        logger.debug(message)
 
         try:
             result = self.chain.invoke(
@@ -93,9 +96,9 @@ class LLMHandler(Handler):
 
     # async handler
     async def _handler(self, data):
-        logger.debug(data)
         symbol, action, reason = self._parse_data(data)
         return symbol, action, reason
+
 
 
 class LLMTradingHandler(LLMHandler):
