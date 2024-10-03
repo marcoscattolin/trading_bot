@@ -1,5 +1,5 @@
 from src.utils.logging import logger
-from src.app.traders import AlpacaTrader
+from src.app.libs.traders import AlpacaTrader
 
 if __name__ == "__main__":
 
