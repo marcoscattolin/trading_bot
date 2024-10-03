@@ -59,7 +59,8 @@ class AlpacaTrader(Strategy):
                     quantity=quantity,
                     time_in_force="day", # valid for today only
                     side="buy",
-                    type="bracket",
+                    type="limit",
+                    limit_price=last_price,
                     take_profit_price=take_profit_price,
                     stop_loss_price=stop_loss_price
                 )
@@ -70,19 +71,20 @@ class AlpacaTrader(Strategy):
 
         elif action == "sell":
             # close positions
-            position = self.get_position(symbol)
-            if position:
-                order = self.create_order(
-                    asset=symbol,
-                    quantity=position.quantity,
-                    side="sell",
-                    type="market"
-                )
-                logger.debug(f"Placing order: {order}")
-                self.submit_order(order)
+            position = self.alpaca_client.get_all_positions()
+            for position in position:
+                if position.symbol == symbol:
+                    order = self.create_order(
+                        asset=symbol,
+                        quantity=position.quantity,
+                        side="sell",
+                        type="market"
+                    )
+                    logger.debug(f"Placing order: {order}")
+                    self.submit_order(order)
 
             # cancel orders
-            orders = self.get_orders()
+            orders = self.alpaca_client.get_orders()
             for order in orders:
                 if order.symbol == symbol:
                     logger.debug(f"Cancelling order: {order}")
