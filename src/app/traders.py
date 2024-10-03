@@ -2,13 +2,24 @@ from lumibot.strategies.strategy import Strategy
 from src.config.config import conf
 from src.utils.logging import logger
 from lumibot.brokers import Alpaca
-
+from alpaca.trading.client import TradingClient
 
 class LLMTrader(Strategy):
 
     def initialize(self, cash_at_risk:float = 0.5):
 
         self.cash_at_risk = cash_at_risk
+
+        self.alpaca_client = TradingClient(
+            api_key=conf.alpaca_creds.api_key,
+            secret_key=conf.alpaca_creds.secret_key.get_secret_value(),
+            paper=conf.alpaca_creds.paper
+        )
+
+    def get_cash(self):
+
+        account = self.alpaca_client.get_account()
+        return float(account.cash)
 
     def position_sizing(self, symbol):
         """
@@ -19,7 +30,8 @@ class LLMTrader(Strategy):
         quantity: int
             The number of shares to buy
         """
-        cash = 1000
+        cash = self.get_cash()
+
         last_price = self.get_last_price(symbol)
         quantity = round(cash * self.cash_at_risk / last_price, 0)
 
