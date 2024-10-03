@@ -76,7 +76,7 @@ class AlpacaTrader(Strategy):
                 if position.symbol == symbol:
                     order = self.create_order(
                         asset=symbol,
-                        quantity=position.quantity,
+                        quantity=position.qty,
                         side="sell",
                         type="market"
                     )
