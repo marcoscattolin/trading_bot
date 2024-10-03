@@ -48,10 +48,12 @@ class AlpacaTrader(Strategy):
             The number of shares to buy
         """
 
-        available_cash = self.get_cash()
+        # keep some cash for avoiding day trading restrictions
+        available_cash = 25_000 - self.get_cash()
 
-        if available_cash > 200:
-            available_cash = 200
+        # max cash to use per trade
+        if available_cash > 100:
+            available_cash = 100
         else:
             available_cash = 0
 
