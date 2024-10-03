@@ -4,7 +4,17 @@ from src.config.config import conf
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import asyncio
+from src.utils.logging import logger
 
+class DebugData:
+
+    def __init__(self, symbols, headline, summary):
+        self.symbols = symbols
+        self.headline = headline
+        self.summary = summary
+
+    def __str__(self):
+        return f"Symbols: {self.symbols}, Headline: {self.headline}, Summary: {self.summary}"
 
 class Handler:
 
@@ -19,7 +29,7 @@ class PrinterHandler(Handler):
 
     # async handler
     async def _handler(self, data):
-        print(data)
+        logger.debug(data)
 
 
 class LLMHandler(Handler):
@@ -52,17 +62,25 @@ class LLMHandler(Handler):
 
     # async handler
     async def _handler(self, data):
-        print(data)
+        logger.debug(data)
+
+        # extract symbols from the data
+        symbols = ", ".join(data.symbols)
+        headline = data.headline
+        summary = data.summary
+        message = f"{headline} | {summary} | Symbols: {symbols}"
+
         try:
             result = self.chain.invoke(
                 {
                     "messages": [
                         HumanMessage(
-                            content=data
+                            content=message
                         )
                     ]
                 }
             )
+            logger.debug(result.content)
 
             # parse the result
             if result.content == "<not_relevant>":
@@ -79,13 +97,29 @@ if __name__ == "__main__":
     async def main():
         handler = LLMHandler().get_handler()
 
-        symbol, action, reason = await handler("Apple shares are expected to boom in the following days.")
+        data = {
+            "symbols": ["AAPL", "NVDA"],
+            "headline": "Apple shares are expected to boom in the following days.",
+            "summary": "Apple is expected to release a new product that will revolutionize the industry."
+        }
+
+        symbol, action, reason = await handler(DebugData(**data))
         print(symbol, action, reason)
 
-        symbol, action, reason = await handler("Nvidia is declaring bankruptcy.")
+        data = {
+            "symbols": ["AAPL", "NVDA"],
+            "headline": "Nvidia is declaring bankruptcy.",
+            "summary": "Nvidia is facing financial difficulties and is expected to declare bankruptcy."
+        }
+        symbol, action, reason = await handler(DebugData(**data))
         print(symbol, action, reason)
 
-        symbol, action, reason = await handler("What is the secret to happiness?")
+        data = {
+            "symbols": ["AAPL", "NVDA"],
+            "headline": "What is the secret to happiness?",
+            "summary": "The secret"
+        }
+        symbol, action, reason = await handler(DebugData(**data))
         print(symbol, action, reason)
 
     asyncio.run(main())
