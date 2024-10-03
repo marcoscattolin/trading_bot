@@ -50,8 +50,8 @@ class AlpacaTrader(Strategy):
 
         available_cash = self.get_cash()
 
-        if available_cash > 500:
-            available_cash = 500
+        if available_cash > 200:
+            available_cash = 200
         else:
             available_cash = 0
 
