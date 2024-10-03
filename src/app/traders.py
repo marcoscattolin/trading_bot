@@ -39,6 +39,7 @@ class AlpacaTrader(Strategy):
         last_price = self.get_last_price(symbol)
         quantity = round(cash * self.cash_at_risk / last_price, 0)
 
+
         return cash, last_price, quantity
 
 
@@ -49,14 +50,14 @@ class AlpacaTrader(Strategy):
         if action == "buy":
 
             if quantity > 0:
-
+                logger.debug(f"Position sizing: {quantity} shares of {symbol} at {last_price}")
                 take_profit_price = round(last_price * 1.20, 2)
                 stop_loss_price = round(last_price * .95, 2)
 
                 order = self.create_order(
                     asset=symbol,
                     quantity=quantity,
-                    time_in_force="ioc", # Immediate Or Cancel
+                    time_in_force="day", # valid for today only
                     side="buy",
                     type="bracket",
                     take_profit_price=take_profit_price,
@@ -65,7 +66,7 @@ class AlpacaTrader(Strategy):
                 logger.debug(f"Placing order: {order}")
                 self.submit_order(order)
             else:
-                logger.info(f"Insufficient cash to buy {symbol}")
+                logger.info(f"Insufficient cash to buy {symbol} at {last_price}, implied quantity: {quantity}")
 
         elif action == "sell":
             # close positions
