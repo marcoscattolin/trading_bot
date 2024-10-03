@@ -51,6 +51,8 @@ class AlpacaTrader(Strategy):
 
             if quantity > 0:
                 logger.debug(f"Position sizing: {quantity} shares of {symbol} at {last_price}")
+
+                limit_price = round(last_price, 2)
                 take_profit_price = round(last_price * 1.20, 2)
                 stop_loss_price = round(last_price * .95, 2)
 
@@ -59,8 +61,8 @@ class AlpacaTrader(Strategy):
                     quantity=quantity,
                     time_in_force="day", # valid for today only
                     side="buy",
-                    type="limit",
-                    limit_price=last_price,
+                    type="bracket",
+                    limit_price=limit_price,
                     take_profit_price=take_profit_price,
                     stop_loss_price=stop_loss_price
                 )
