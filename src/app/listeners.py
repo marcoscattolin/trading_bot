@@ -1,6 +1,8 @@
 from alpaca.data.live import NewsDataStream
 from src.config.config import conf
 from src.app.handlers import LLMTradingHandler as Handler
+from src.utils.logging import logger
+
 
 class NewsListener:
 
@@ -18,6 +20,7 @@ class NewsListener:
 
 if __name__ == "__main__":
 
+    logger.setLevel("WARNING")
     handler = Handler().get_handler()
     listener = NewsListener(handler, symbols=["*"])
     listener.run()
