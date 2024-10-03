@@ -1,6 +1,6 @@
 from alpaca.data.live import NewsDataStream
 from src.config.config import conf
-from src.app.handlers import PrinterHandler
+from src.app.handlers import PrinterHandler as Handler
 
 class NewsListener:
 
@@ -18,6 +18,6 @@ class NewsListener:
 
 if __name__ == "__main__":
 
-    handler = PrinterHandler().get_handler()
+    handler = Handler().get_handler()
     listener = NewsListener(handler, symbols=["*"])
     listener.run()
