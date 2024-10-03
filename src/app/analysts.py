@@ -80,11 +80,18 @@ class LLMAnalyst:
                 }
             )
 
-            return self._format_output(result)
+            message = self._format_output(result)
+            if message:
+                self.dispatch(message)
 
         except:
             # do nothing
             return None
+
+    def dispatch(self, message):
+
+        # to be customized in inherited classes
+        logger.debug(f"[{self.name}] will dispatch message: {message}")
 
 
 if __name__ == "__main__":
@@ -110,5 +117,4 @@ if __name__ == "__main__":
         ]
 
     for d in data:
-        result = analyst.analyze(d)
-        logger.info(result)
+        analyst.analyze(d)

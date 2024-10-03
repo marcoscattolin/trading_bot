@@ -28,7 +28,7 @@ class NewsListener:
     def dispatch(self, message):
 
         # to be customized in inherited classes
-        logger.debug(f"Will dispatch message: {message}")
+        logger.debug(f"[{self.name}] will dispatch message: {message}")
 
     def run(self):
         self.wss_client.run()
