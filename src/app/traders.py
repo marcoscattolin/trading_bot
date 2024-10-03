@@ -69,10 +69,10 @@ class AlpacaTrader(Strategy):
                     take_profit_price=take_profit_price,
                     stop_loss_price=stop_loss_price
                 )
-                logger.debug(f"Placing order: {order}")
+                logger.warning(f"BROKER: Placing order {order}")
                 self.submit_order(order)
             else:
-                logger.info(f"Insufficient cash to buy {symbol} at {last_price}, implied quantity: {quantity}")
+                logger.warning(f"BROKER: Insufficient cash to buy {symbol} at {last_price}, implied quantity: {quantity}")
 
         elif action == "sell":
             # close positions
@@ -85,14 +85,14 @@ class AlpacaTrader(Strategy):
                         side="sell",
                         type="market"
                     )
-                    logger.debug(f"Placing order: {order}")
+                    logger.warning(f"BROKER: Placing order: {order}")
                     self.submit_order(order)
 
             # cancel orders
             orders = self.alpaca_client.get_orders()
             for order in orders:
                 if order.symbol == symbol:
-                    logger.debug(f"Cancelling order: {order}")
+                    logger.warning(f"BROKER: Cancelling order: {order}")
                     self.cancel_order(order)
         else:
             logger.error(f"Invalid action: {action}")

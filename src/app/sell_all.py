@@ -19,6 +19,6 @@ if __name__ == "__main__":
 
     trader.initialize()
 
-    logger.debug("Selling all positions and canceling all orders...")
+    logger.warning("Selling all positions and canceling all orders...")
     trader.alpaca_client.close_all_positions(cancel_orders=True)
-    logger.debug("All positions sold.")
+    logger.warning("All positions sold.")

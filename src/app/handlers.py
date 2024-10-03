@@ -70,7 +70,7 @@ class LLMHandler(Handler):
         headline = data.headline
         summary = data.summary
         message = f"{symbols} | {headline} | {summary} | "
-        logger.debug(message)
+        logger.warning(f"NEWS: {message}")
 
         try:
             result = self.chain.invoke(
@@ -82,7 +82,7 @@ class LLMHandler(Handler):
                     ]
                 }
             )
-            logger.debug(result.content)
+            logger.warning(f"LLM: {result.content}")
 
             # parse the result
             if result.content == "<not_relevant>":
