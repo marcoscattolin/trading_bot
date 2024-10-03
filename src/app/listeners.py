@@ -1,6 +1,6 @@
 from alpaca.data.live import NewsDataStream
 from src.config.config import conf
-from src.app.handlers import PrinterHandler as Handler
+from src.app.handlers import LLMTradingHandler as Handler
 
 class NewsListener:
 

@@ -5,6 +5,8 @@ from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import asyncio
 from src.utils.logging import logger
+from lumibot.brokers import Alpaca
+from src.app.traders import AlpacaTrader
 
 class DebugData:
 
@@ -59,10 +61,7 @@ class LLMHandler(Handler):
 
         self.chain = prompt | chat
 
-
-    # async handler
-    async def _handler(self, data):
-        logger.debug(data)
+    def _parse_data(self, data):
 
         # extract symbols from the data
         symbols = ", ".join(data.symbols)
@@ -89,7 +88,43 @@ class LLMHandler(Handler):
                 symbol, action, reason = result.content.split(" - ")
                 return symbol, action, reason
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
+            return "<not_relevant>", "<not_relevant>", "<not_relevant>"
+
+    # async handler
+    async def _handler(self, data):
+        logger.debug(data)
+        symbol, action, reason = self._parse_data(data)
+        return symbol, action, reason
+
+
+class LLMTradingHandler(LLMHandler):
+
+    def __init__(self):
+
+        # call super
+        super().__init__()
+
+        # init broker
+        alpaca_config = {
+            "API_KEY": conf.alpaca_creds.api_key,
+            "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
+            "PAPER": conf.alpaca_creds.paper,
+        }
+        broker = Alpaca(alpaca_config)
+
+        self.trader = AlpacaTrader(broker=broker)
+
+        self.trader.initialize()
+
+    # async handler
+    async def _handler(self, data):
+        logger.debug(data)
+        symbol, action, reason = self._parse_data(data)
+        if symbol == "<not_relevant>":
+            pass
+        else:
+            self.trader.make_order(symbol, action)
 
 
 if __name__ == "__main__":
