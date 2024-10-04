@@ -1,7 +1,6 @@
 from alpaca.data.live import NewsDataStream
-from src.config.config import conf
 from src.utils.logging import logger
-
+import os
 
 class NewsListener:
 
@@ -10,8 +9,8 @@ class NewsListener:
     def __init__(self, symbols:[str]):
 
         self.wss_client = NewsDataStream(
-            api_key=conf.alpaca_creds.api_key,
-            secret_key=conf.alpaca_creds.secret_key.get_secret_value()
+            api_key=os.getenv("ALPACA_API_KEY"),
+            secret_key=os.getenv("ALPACA_SECRET_KEY"),
         )
         self.wss_client.subscribe_news(self.handler, *symbols)
 

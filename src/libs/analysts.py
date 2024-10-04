@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from langchain_openai import ChatOpenAI
-from src.config.config import conf
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from src.utils.logging import logger
+import os
 
 class LLMAnalyst:
 
@@ -12,7 +12,7 @@ class LLMAnalyst:
     def __init__(self):
 
         chat = ChatOpenAI(
-            openai_api_key=conf.openai.api_key.get_secret_value(),
+            openai_api_key=os.getenv("OPENAI_API_KEY"),
             model="gpt-4o",
             temperature=0.2
         )

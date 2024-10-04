@@ -1,17 +1,17 @@
 from lumibot.strategies.strategy import Strategy
-from src.config.config import conf
 from src.utils.logging import logger
 from lumibot.brokers import Alpaca
 from alpaca.trading.client import TradingClient
+import os
 
 class AlpacaTrader(Strategy):
 
     name = "AlpacaTrader"
 
     broker = Alpaca({
-            "API_KEY": conf.alpaca_creds.api_key,
-            "API_SECRET": conf.alpaca_creds.secret_key.get_secret_value(),
-            "PAPER": conf.alpaca_creds.paper,
+            "API_KEY": os.getenv("ALPACA_API_KEY"),
+            "API_SECRET": os.getenv("ALPACA_SECRET_KEY"),
+            "PAPER": os.getenv("ALPACA_PAPER"),
         })
 
     def __init__(self):
@@ -24,9 +24,9 @@ class AlpacaTrader(Strategy):
     def initialize(self):
 
         self.alpaca_client = TradingClient(
-            api_key=conf.alpaca_creds.api_key,
-            secret_key=conf.alpaca_creds.secret_key.get_secret_value(),
-            paper=conf.alpaca_creds.paper
+            api_key=os.getenv("ALPACA_API_KEY"),
+            secret_key=os.getenv("ALPACA_SECRET_KEY"),
+            paper=os.getenv("ALPACA_PAPER")
         )
         super().initialize()
 

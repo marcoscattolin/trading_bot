@@ -1,6 +1,0 @@
-trading_bot:
-    symbol: "AAPL"
-    cash_at_risk: 0.5
-    sleeptime: "24H"
-    backtest_start: "2022-01-01"
-    backtest_end: "2021-12-31"
