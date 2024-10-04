@@ -99,6 +99,18 @@ mkl = "^2024.0.0"
 numpyro = "0.15.2"
 mkl-service = "2.4.1"
 
+# ------------------ langchain -----------------------
+[tool.poetry.group.langchain]
+optional = true
+
+[tool.poetry.group.langchain.dependencies]
+langchain = "0.1.14"
+chromadb = "0.4.24"
+beautifulsoup4 = "4.12.3"
+langchain-openai = "0.1.1"
+langchain-community = "0.0.31"
+
+
 # ------------------ testing -----------------------
 [tool.poetry.group.testing]
 

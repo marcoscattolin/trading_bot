@@ -39,6 +39,9 @@ class AlpacaCreds(BaseModel):
     base_url: str = None
     paper: bool = None
 
+class OpenAI(BaseModel):
+    api_key: SecretStr = None
+
 
 class Config(XConfig):
 
@@ -47,6 +50,8 @@ class Config(XConfig):
     alpaca_creds: AlpacaCreds
 
     trading_bot: TradingBot
+
+    openai: OpenAI
 
 
 class __Provider(BaseConfigProvider[Config]):
